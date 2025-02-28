@@ -2,22 +2,23 @@ import { Metadata } from "next";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
-  const vaildIds = ["1", "2", "3", "4"];
-  const image = vaildIds.includes(id) ? `/${id}.jpg` : `1.jpg`;
+  const validIds = ["1", "2", "3", "4"];
+  const image = validIds.includes(id) ? `/${id}.jpg` : `/1.jpg`;
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000";
+
   return {
     metadataBase: new URL(baseUrl),
     title: `Social Share Example ${id} - My NextJS App`,
-    description: "This page og-tag practice",
+    description: "This page demonstrates dynamic meta tag assignment with fixed images for social sharing.",
     openGraph: {
-      title: `SoCial Share Example ${id} -My NextJS App`,
-      description: "This page og-tag practice",
+      title: `Social Share Example ${id} - My NextJS App`,
+      description: "Learn  how to dynamically assign meta tags with fixed images for rich social media previews.",
       images: [
         {
-          url: image,
-          width: 20000,
-          height: 800,
+          url: `${baseUrl}${image}`,
+          width: 1200,
+          height: 630,
           alt: `Social Share Image ${id}`,
         },
       ],
@@ -27,8 +28,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     twitter: {
       card: "summary_large_image",
       title: `Social Share Example ${id} - My NextJS App`,
-      description: "This page og-tag practice",
-      images: [image],
+      description: "Experience enhanced social media sharing with fixed images using OpenGraph and Twitter Card meta tags.",
+      images: [`${baseUrl}${image}`],
     },
   };
 }
